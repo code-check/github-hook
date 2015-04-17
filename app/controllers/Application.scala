@@ -20,8 +20,8 @@ import services.github.actions._
 
 object Application extends Controller with Json4s {
 
-  val clientId: String = sys.env("GITHUB_CLIENT_ID")
-  val clientSecret: String = sys.env("GITHUB_CLIENT_SECRET")
+  val clientId: String = sys.env.getOrElse("GITHUB_CLIENT_ID", "")
+  val clientSecret: String = sys.env.getOrElse("GITHUB_CLIENT_SECRET", "")
 
   private val gh = Akka.system.actorOf(Props(
     new GitHubService(
