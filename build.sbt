@@ -11,7 +11,7 @@ libraryDependencies ++= Seq(
   anorm,
   cache,
   ws,
-  "jp.co.givery" %% "github-api" % "0.1.0"
+  "io.code-check" %% "github-api" % "0.1.1-SNAPSHOT"
 )
 
 sources in (Compile, doc) := Seq.empty

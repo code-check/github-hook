@@ -11,6 +11,7 @@ object Application extends Controller {
   val api = new GitHubAPI(Play.configuration.getString("github.token").get)
 
   def index = Action.async {
+
     api.getOrganization("code-check").map { org =>
       Ok(org.toString)
     }
