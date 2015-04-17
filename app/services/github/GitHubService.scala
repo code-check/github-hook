@@ -13,7 +13,8 @@ class GitHubService(token: String, am: ActionManager)(implicit client: AsyncHttp
   }
 
   private def doProcess(msg: GitHubEvent) = {
-    am.get(msg).foreach(_.process(api, msg))
+    val repoApi = api.repositoryAPI(msg.repository.owner.name, msg.repository.name)
+    am.get(msg).foreach(_.process(repoApi, msg))
   }
 
 }

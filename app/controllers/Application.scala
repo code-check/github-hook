@@ -14,8 +14,9 @@ import codecheck.github.events.GitHubEvent
 import codecheck.github.api.OAuthAPI
 import services.github.GitHubService
 import services.github.ActionManager
-import services.github.actions.LogAction
 import models.AsyncHttpClientHolder.instance
+
+import services.github.actions._
 
 object Application extends Controller with Json4s {
 
@@ -26,6 +27,9 @@ object Application extends Controller with Json4s {
     new GitHubService(
       sys.env("GITHUB_TOKEN"),
       new ActionManager(List(
+        new ReviewMeAction(),
+        new LGTMAction(),
+        new FixMeAction(),
         new LogAction()
       ))
     )
