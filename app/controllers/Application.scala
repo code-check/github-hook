@@ -27,10 +27,10 @@ object Application extends Controller with Json4s {
     new GitHubService(
       sys.env("GITHUB_TOKEN"),
       new ActionManager(List(
+        new LogAction(),
         new ReviewMeAction(),
         new LGTMAction(),
-        new FixMeAction(),
-        new LogAction()
+        new FixMeAction()
       ))
     )
   ))
