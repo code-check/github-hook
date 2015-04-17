@@ -17,7 +17,7 @@ class FixMeAction extends GitHubAction {
   }
   private def findAssignee(text: String): Option[String] = {
     text.split("\n").map(_.split("[\t\r\n\\., ]")).flatMap { words =>
-      val user = words.find(_.startsWith("@"))
+      val user = words.find(_.startsWith("@")).map(_.substring(1))
       val fix = words.indexWhere(_.toLowerCase == "fix")
       val me = words.indexWhere(_.toLowerCase == "me")
 
@@ -27,7 +27,6 @@ class FixMeAction extends GitHubAction {
   def isMatch(msg: GitHubEvent): Boolean = msg match {
     case x: IssueCommentEvent =>
       hasFixMe(x.comment.body)
-      x.comment.body.toUpperCase.indexOf("LGTM") != -1
     case _ => false
   }
 
@@ -41,7 +40,7 @@ class FixMeAction extends GitHubAction {
       )
     }
     val newLabels = "Fix me!" :: labels
-      .filter(_.name != "Review me!")
+      .filter(l => l.name != "Review me!" && l.name != "Ship it!")
       .map(_.name)
     api.editIssue(number, IssueEditParams(
       labels = newLabels,

@@ -12,7 +12,7 @@ import codecheck.github.models.PullRequestAction
 class ReviewMeAction extends GitHubAction {
   private def findAssignee(text: String): Option[String] = {
     text.split("\n").map(_.split("[\t\r\n\\., ]")).flatMap { words =>
-      val user = words.find(_.startsWith("@"))
+      val user = words.find(_.startsWith("@")).map(_.substring(1))
       val review = words.find(_.equalsIgnoreCase("review")).isDefined
 
       if (review) user else None
@@ -28,7 +28,7 @@ class ReviewMeAction extends GitHubAction {
     text.split("\n").map(_.split("[\t\r\n\\., ]")).filter { words =>
       words.find(_.startsWith("@")).isDefined && 
       words.find(_.equalsIgnoreCase("review")).isDefined
-    }.length == 0
+    }.length > 0
   }
 
   def process(api: RepositoryAPI, msg: GitHubEvent): Unit = {

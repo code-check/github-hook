@@ -18,8 +18,8 @@ class LGTMAction extends GitHubAction {
     val (number, opener, labels) = msg match {
       case x: IssueCommentEvent => (x.issue.number, x.issue.user.name, x.issue.labels)
     }
-    val newLabels = "Review me!" :: labels
-      .filter(_.name != "Ship it!")
+    val newLabels = "Ship it!" :: labels
+      .filter(l => l.name != "Review me!" && l.name != "Fix me!")
       .map(_.name)
     api.editIssue(number, IssueEditParams(
       labels = newLabels,
