@@ -7,10 +7,10 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 scalaVersion := "2.11.6"
 
 libraryDependencies ++= Seq(
-  jdbc,
-  anorm,
   cache,
   ws,
+  "com.github.tototoshi" %% "play-json4s-jackson" % "0.3.1",
+  "com.github.tototoshi" %% "play-json4s-test-jackson" % "0.3.1" % "test",
   "io.code-check" %% "github-api" % "0.1.1-SNAPSHOT"
 )
 
