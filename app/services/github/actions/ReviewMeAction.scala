@@ -6,7 +6,7 @@ import codecheck.github.api.RepositoryAPI
 import codecheck.github.events.GitHubEvent
 import codecheck.github.events.IssueCommentEvent
 import codecheck.github.events.PullRequestEvent
-import codecheck.github.models.IssueEditParams
+import codecheck.github.models.IssueInput
 import codecheck.github.models.PullRequestAction
 
 class ReviewMeAction extends GitHubAction {
@@ -47,7 +47,7 @@ class ReviewMeAction extends GitHubAction {
     val newLabels = "Review me!" :: labels
       .filter(_.name != "Fix me!")
       .map(_.name)
-    api.editIssue(number, IssueEditParams(
+    api.editIssue(number, IssueInput(
       labels = newLabels,
       assignee = findAssignee(text)
     ))

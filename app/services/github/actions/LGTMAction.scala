@@ -5,7 +5,7 @@ import services.github.GitHubAction
 import codecheck.github.api.RepositoryAPI
 import codecheck.github.events.GitHubEvent
 import codecheck.github.events.IssueCommentEvent
-import codecheck.github.models.IssueEditParams
+import codecheck.github.models.IssueInput
 
 class LGTMAction extends GitHubAction {
   def isMatch(msg: GitHubEvent): Boolean = msg match {
@@ -21,7 +21,7 @@ class LGTMAction extends GitHubAction {
     val newLabels = "Ship it!" :: labels
       .filter(l => l.name != "Review me!" && l.name != "Fix me!")
       .map(_.name)
-    api.editIssue(number, IssueEditParams(
+    api.editIssue(number, IssueInput(
       labels = newLabels,
       assignee = Some(opener)
     ))

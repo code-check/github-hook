@@ -5,7 +5,7 @@ import services.github.GitHubAction
 import codecheck.github.api.RepositoryAPI
 import codecheck.github.events.GitHubEvent
 import codecheck.github.events.IssueCommentEvent
-import codecheck.github.models.IssueEditParams
+import codecheck.github.models.IssueInput
 
 class FixMeAction extends GitHubAction {
   private def hasFixMe(text: String): Boolean = {
@@ -42,7 +42,7 @@ class FixMeAction extends GitHubAction {
     val newLabels = "Fix me!" :: labels
       .filter(l => l.name != "Review me!" && l.name != "Ship it!")
       .map(_.name)
-    api.editIssue(number, IssueEditParams(
+    api.editIssue(number, IssueInput(
       labels = newLabels,
       assignee = Some(findAssignee(text).getOrElse(opener))
     ))
