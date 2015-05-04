@@ -10,6 +10,8 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   "joda-time" % "joda-time" % "2.7",
+  "org.json4s" %% "json4s-jackson" % "3.2.11",
+  "org.json4s" %% "json4s-ext" % "3.2.11",
   "com.github.tototoshi" %% "play-json4s-jackson" % "0.3.1",
   "com.github.tototoshi" %% "play-json4s-test-jackson" % "0.3.1" % "test"
 )
