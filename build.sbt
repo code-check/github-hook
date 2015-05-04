@@ -9,6 +9,7 @@ scalaVersion := "2.11.6"
 libraryDependencies ++= Seq(
   cache,
   ws,
+  "joda-time" % "joda-time" % "2.7",
   "com.github.tototoshi" %% "play-json4s-jackson" % "0.3.1",
   "com.github.tototoshi" %% "play-json4s-test-jackson" % "0.3.1" % "test"
 )
