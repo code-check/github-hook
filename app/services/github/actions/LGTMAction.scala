@@ -16,7 +16,7 @@ class LGTMAction extends GitHubAction {
 
   def process(api: RepositoryAPI, msg: GitHubEvent): Unit = {
     val (number, opener, labels) = msg match {
-      case x: IssueCommentEvent => (x.issue.number, x.issue.user.name, x.issue.labels)
+      case x: IssueCommentEvent => (x.issue.number, x.issue.user.login, x.issue.labels)
     }
     val newLabels = "Ship it!" :: labels
       .filter(l => l.name != "Review me!" && l.name != "Fix me!")

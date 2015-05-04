@@ -10,8 +10,7 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   "com.github.tototoshi" %% "play-json4s-jackson" % "0.3.1",
-  "com.github.tototoshi" %% "play-json4s-test-jackson" % "0.3.1" % "test",
-  "io.code-check" %% "github-api" % "0.1.1-SNAPSHOT"
+  "com.github.tototoshi" %% "play-json4s-test-jackson" % "0.3.1" % "test"
 )
 
 sources in (Compile, doc) := Seq.empty

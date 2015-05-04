@@ -34,7 +34,7 @@ class FixMeAction extends GitHubAction {
     val (number, opener, labels, text) = msg match {
       case x: IssueCommentEvent => (
         x.issue.number, 
-        x.issue.user.name, 
+        x.issue.user.login, 
         x.issue.labels,
         x.comment.body
       )
