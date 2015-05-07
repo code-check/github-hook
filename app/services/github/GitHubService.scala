@@ -16,7 +16,7 @@ class GitHubService(token: String, am: ActionManager)(implicit client: AsyncHttp
     val login = msg.repository.opt("owner.login")
 println("login: " + login)
     if (login.isEmpty) {
-      println("!!!!!!!!!!! - login is not defined")
+      println("!!!!!!!!!!! - login is not defined: " + msg.name)
       println(msg.repository.owner)
     }
     val repoApi = api.repositoryAPI(msg.repository.owner.login, msg.repository.name)
