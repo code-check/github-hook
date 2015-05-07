@@ -13,13 +13,7 @@ class GitHubService(token: String, am: ActionManager)(implicit client: AsyncHttp
   }
 
   private def doProcess(msg: GitHubEvent) = {
-    val login = msg.repository.opt("owner.login")
-println("login: " + login)
-    if (login.isEmpty) {
-      println("!!!!!!!!!!! - login is not defined: " + msg.name)
-      println(msg.repository.owner)
-    }
-    val repoApi = api.repositoryAPI(msg.repository.owner.login, msg.repository.name)
+    val repoApi = api.repositoryAPI(msg.ownerName, msg.repositoryName)
     am.get(msg).foreach(_.process(repoApi, msg))
   }
 
