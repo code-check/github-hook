@@ -30,7 +30,8 @@ object Application extends Controller with Json4s {
         new LogAction(),
         new ReviewMeAction(),
         new LGTMAction(),
-        new FixMeAction()
+        new FixMeAction(),
+        new PriorityAction()
       ))
     )
   ))

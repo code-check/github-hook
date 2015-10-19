@@ -20,13 +20,13 @@ class ReviewMeAction extends GitHubAction {
   }
   def isMatch(msg: GitHubEvent): Boolean = {
     val text = msg match {
-      case x: PullRequestEvent if x.action == PullRequestAction.opened => 
+      case x: PullRequestEvent if x.action == PullRequestAction.opened =>
         x.pull_request.body
       case x: IssueCommentEvent => x.comment.body
       case _ => ""
     }
     text.split("\n").map(_.split("[\t\r\n\\., ]")).filter { words =>
-      words.find(_.startsWith("@")).isDefined && 
+      words.find(_.startsWith("@")).isDefined &&
       words.find(_.equalsIgnoreCase("review")).isDefined
     }.length > 0
   }
@@ -39,7 +39,7 @@ class ReviewMeAction extends GitHubAction {
         x.pull_request.body
       )
       case x: IssueCommentEvent => (
-        x.issue.number, 
+        x.issue.number,
         x.issue.labels,
         x.comment.body
       )
