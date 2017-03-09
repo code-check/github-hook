@@ -9,6 +9,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 import com.github.tototoshi.play2.json4s.jackson.Json4s
 
+import com.ning.http.client.AsyncHttpClient
+
+import codecheck.github.transport.asynchttp19.AsyncHttp19Transport
 import codecheck.github.api.GitHubAPI
 import codecheck.github.events.GitHubEvent
 import codecheck.github.api.OAuthAPI
@@ -22,6 +25,9 @@ object Application extends Controller with Json4s {
 
   val clientId: String = sys.env.getOrElse("GITHUB_CLIENT_ID", "")
   val clientSecret: String = sys.env.getOrElse("GITHUB_CLIENT_SECRET", "")
+
+  val httpClient = new AsyncHttpClient()
+  implicit val transport = new AsyncHttp19Transport(httpClient)
 
   private val gh = Akka.system.actorOf(Props(
     new GitHubService(
