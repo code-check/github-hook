@@ -3,9 +3,9 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
-POST    /hook                       controllers.Application.hook
-GET     /login/github/callback      controllers.Application.githubCallback
+GET     /                           controllers.ApplicationController.index
+POST    /hook                       controllers.ApplicationController.hook
+GET     /login/github/callback      controllers.ApplicationController.githubCallback
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
