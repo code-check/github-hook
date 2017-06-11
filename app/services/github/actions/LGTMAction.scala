@@ -26,6 +26,6 @@ class LGTMAction extends GitHubAction {
       labels = newLabels,
       assignee = Some(opener)
     ))
-    api.removeReviewRequest(number, commenter).onComplete(t => println(t))
+    api.removeReviewRequest(number, commenter)
   }
 }
