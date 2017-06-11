@@ -29,6 +29,7 @@ class PrReviewAction extends GitHubAction {
               labels = newLabels,
               assignee = Some(issue.user.login)
             ))
+            api.removeReviewRequest(issue.number, x.sender.login).onComplete(t => println(t))
           case None =>
         }
     }

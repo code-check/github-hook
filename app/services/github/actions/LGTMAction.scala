@@ -6,6 +6,7 @@ import codecheck.github.api.RepositoryAPI
 import codecheck.github.events.GitHubEvent
 import codecheck.github.events.IssueCommentEvent
 import codecheck.github.models.IssueInput
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class LGTMAction extends GitHubAction {
   def isMatch(msg: GitHubEvent): Boolean = msg match {
@@ -15,8 +16,8 @@ class LGTMAction extends GitHubAction {
   }
 
   def process(api: RepositoryAPI, msg: GitHubEvent): Unit = {
-    val (number, opener, labels) = msg match {
-      case x: IssueCommentEvent => (x.issue.number, x.issue.user.login, x.issue.labels)
+    val (number, opener, commenter, labels) = msg match {
+      case x: IssueCommentEvent => (x.issue.number, x.issue.user.login, x.comment.user.login, x.issue.labels)
     }
     val newLabels = "Ship it!" :: labels
       .filter(l => l.name != "Review me!" && l.name != "Fix me!")
@@ -25,5 +26,6 @@ class LGTMAction extends GitHubAction {
       labels = newLabels,
       assignee = Some(opener)
     ))
+    api.removeReviewRequest(number, commenter).onComplete(t => println(t))
   }
 }

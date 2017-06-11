@@ -10,6 +10,7 @@ import codecheck.github.events.PullRequestEvent
 import codecheck.github.models.IssueInput
 import codecheck.github.models.PullRequestAction
 import codecheck.github.models.IssueAction
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class ReviewMeAction extends GitHubAction {
   private def findAssignee(text: String): Option[String] = {
@@ -56,9 +57,12 @@ class ReviewMeAction extends GitHubAction {
     val newLabels = "Review me!" :: labels
       .filter(_.name != "Fix me!")
       .map(_.name)
-    api.editIssue(number, IssueInput(
-      labels = newLabels,
-      assignee = findAssignee(text)
-    ))
+    findAssignee(text).map { assignee =>
+      api.editIssue(number, IssueInput(
+        labels = newLabels,
+        assignee = Some(assignee)
+      ))
+      api.addReviewRequest(number, assignee).onComplete(t => println(t))
+    }
   }
 }
