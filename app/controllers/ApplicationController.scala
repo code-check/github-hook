@@ -40,7 +40,8 @@ class ApplicationController @Inject() (ws: WSClient, json4s: Json4s, actorSystem
         new ReviewMeAction(),
         new LGTMAction(),
         new FixMeAction(),
-        new PriorityAction()
+        new PriorityAction(),
+        new PrReviewAction()
       ))
     )
   ))

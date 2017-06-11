@@ -5,6 +5,8 @@ import services.github.GitHubAction
 import codecheck.github.api.RepositoryAPI
 import codecheck.github.events.GitHubEvent
 import codecheck.github.events.IssueCommentEvent
+import codecheck.github.events.IssueEvent
+import codecheck.github.models.IssueAction
 import codecheck.github.models.IssueInput
 
 class FixMeAction extends GitHubAction {
@@ -25,6 +27,8 @@ class FixMeAction extends GitHubAction {
     }.headOption
   }
   def isMatch(msg: GitHubEvent): Boolean = msg match {
+    case x: IssueEvent if x.action == IssueAction.opened =>
+      hasFixMe(x.issue.body)
     case x: IssueCommentEvent =>
       hasFixMe(x.comment.body)
     case _ => false
@@ -32,9 +36,15 @@ class FixMeAction extends GitHubAction {
 
   def process(api: RepositoryAPI, msg: GitHubEvent): Unit = {
     val (number, opener, labels, text) = msg match {
+      case x: IssueEvent => (
+        x.issue.number,
+        x.issue.user.login,
+        x.issue.labels,
+        x.issue.body
+      )
       case x: IssueCommentEvent => (
-        x.issue.number, 
-        x.issue.user.login, 
+        x.issue.number,
+        x.issue.user.login,
         x.issue.labels,
         x.comment.body
       )
