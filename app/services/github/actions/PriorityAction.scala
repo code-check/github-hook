@@ -22,7 +22,7 @@ class PriorityAction extends GitHubAction {
   private def getPriority(msg: GitHubEvent): Option[String] = {
     val text = msg match {
       case x: IssueEvent if x.get("action") == "opened" =>
-        x.get("body")
+        x.get("issue.body")
       case x: DefaultEvent if x.name == "issues" && x.get("action") == "opened" =>
         x.get("issue.body")
       case x: PullRequestEvent if x.action == PullRequestAction.opened =>

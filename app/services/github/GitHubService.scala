@@ -3,12 +3,12 @@ package services.github
 import akka.actor.Actor
 import codecheck.github.api.GitHubAPI
 import codecheck.github.events.GitHubEvent
-import com.ning.http.client.AsyncHttpClient
+import codecheck.github.transport.Transport
 
-class GitHubService(token: String, am: ActionManager)(implicit client: AsyncHttpClient) extends Actor {
+class GitHubService(token: String, am: ActionManager)(implicit transport: Transport) extends Actor {
 
   val api = GitHubAPI(token)
-  def receive = { 
+  def receive = {
     case x: GitHubEvent => doProcess(x)
   }
 

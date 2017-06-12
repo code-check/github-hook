@@ -4,10 +4,13 @@ import play.api.Logger
 import services.github.GitHubAction
 import codecheck.github.api.RepositoryAPI
 import codecheck.github.events.GitHubEvent
+import codecheck.github.events.IssueEvent
 import codecheck.github.events.IssueCommentEvent
 import codecheck.github.events.PullRequestEvent
 import codecheck.github.models.IssueInput
 import codecheck.github.models.PullRequestAction
+import codecheck.github.models.IssueAction
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class ReviewMeAction extends GitHubAction {
   private def findAssignee(text: String): Option[String] = {
@@ -20,6 +23,8 @@ class ReviewMeAction extends GitHubAction {
   }
   def isMatch(msg: GitHubEvent): Boolean = {
     val text = msg match {
+      case x: IssueEvent if x.action == IssueAction.opened =>
+        x.issue.body
       case x: PullRequestEvent if x.action == PullRequestAction.opened =>
         x.pull_request.body
       case x: IssueCommentEvent => x.comment.body
@@ -33,6 +38,11 @@ class ReviewMeAction extends GitHubAction {
 
   def process(api: RepositoryAPI, msg: GitHubEvent): Unit = {
     val (number, labels, text) = msg match {
+      case x: IssueEvent => (
+        x.issue.number,
+        Nil,
+        x.issue.body
+      )
       case x: PullRequestEvent => (
         x.pull_request.number,
         Nil,
@@ -47,9 +57,12 @@ class ReviewMeAction extends GitHubAction {
     val newLabels = "Review me!" :: labels
       .filter(_.name != "Fix me!")
       .map(_.name)
-    api.editIssue(number, IssueInput(
-      labels = newLabels,
-      assignee = findAssignee(text)
-    ))
+    findAssignee(text).map { assignee =>
+      api.editIssue(number, IssueInput(
+        labels = newLabels,
+        assignee = Some(assignee)
+      ))
+      api.addReviewRequest(number, assignee).onComplete(t => println(t))
+    }
   }
 }
