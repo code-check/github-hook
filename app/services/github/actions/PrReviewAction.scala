@@ -32,7 +32,7 @@ class PrReviewAction extends GitHubAction {
             api.removeReviewRequest(issue.number, x.sender.login)
           case None =>
         }
-      case x: PullRequestReviewEvent if x.review.state == PullRequestReviewState.change_requested =>
+      case x: PullRequestReviewEvent if x.review.state == PullRequestReviewState.changes_requested =>
         val repo = x.repository
         api.getIssue(x.pull_request.number).map {
           case Some(issue) =>
