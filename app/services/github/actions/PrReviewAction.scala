@@ -32,6 +32,19 @@ class PrReviewAction extends GitHubAction {
             api.removeReviewRequest(issue.number, x.sender.login)
           case None =>
         }
+      case x: PullRequestReviewEvent if x.review.state == PullRequestReviewState.changes_requested =>
+        val repo = x.repository
+        api.getIssue(x.pull_request.number).map {
+          case Some(issue) =>
+            val newLabels = "Fix me!" :: issue.labels
+              .filter(l => l.name != "Review me!" && l.name != "Ship it!")
+              .map(_.name)
+            api.editIssue(issue.number, IssueInput(
+              labels = newLabels,
+              assignee = Some(issue.user.login)
+            ))
+          case None =>
+        }
     }
   }
 }
